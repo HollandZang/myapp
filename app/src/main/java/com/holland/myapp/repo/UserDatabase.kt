@@ -1,4 +1,4 @@
-package com.holland.myapp
+package com.holland.myapp.repo
 
 import androidx.room.*
 

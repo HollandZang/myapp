@@ -7,9 +7,9 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.holland.myapp.js_interface.JsInterface
+import com.holland.myapp.repo.UserDatabase
 import com.holland.myapp.util.FileUtil
-import java.io.*
-import java.util.*
+import com.holland.myapp.util.HttpUtil
 import kotlin.system.exitProcess
 
 
@@ -26,8 +26,7 @@ class MainActivity : AppCompatActivity() {
             UserDatabase::class.java, "user"
         ).build()
 
-        /*解压H5文件*/
-        FileUtil.upZipFile("${filesDir.path}/web/dist.zip", "${filesDir.path}/web")
+        updateVersion()
 
         webView = findViewById<WebView>(R.id.web_view).apply {
 //            loadUrl("file:///android_asset/dist/index.html")
@@ -56,5 +55,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private fun updateVersion() {
+        HttpUtil.postJson(this, "test")
+        /*解压H5文件*/
+        FileUtil.upZipFile("${filesDir.path}/web/dist.zip", "${filesDir.path}/web")
     }
 }
