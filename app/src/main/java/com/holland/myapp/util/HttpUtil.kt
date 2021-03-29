@@ -24,7 +24,7 @@ object HttpUtil {
         onFailure: ((exception: Exception) -> Unit)?
     ) {
         val build = url.toHttpUrlOrNull()?.newBuilder().apply {
-            data?.forEach { (t, u) -> this!!.addEncodedQueryParameter(t as String, u.toString()) }
+            data?.forEach { (t, u) -> this!!.addEncodedQueryParameter(t, u.toString()) }
         }!!.build()
         val request = Request.Builder()
             .url(build)

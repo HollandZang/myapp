@@ -11,7 +11,9 @@ object SharedPreferencesUtil {
 
     fun saveVersion(context: Context, version: Version) {
         context.getSharedPreferences(SYSTEM, AppCompatActivity.MODE_PRIVATE)
-            .getString(SYSTEM_VERSION, GsonUtil.instance.toJson(version))
+            .edit()
+            .putString(SYSTEM_VERSION, GsonUtil.instance.toJson(version))
+            .apply()
     }
 
     fun getVersion(context: Context): Version? {

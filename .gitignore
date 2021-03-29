@@ -14,3 +14,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/vue-demo/dist
+/vue-demo/dist.zip

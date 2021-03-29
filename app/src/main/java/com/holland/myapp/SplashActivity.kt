@@ -47,6 +47,7 @@ class SplashActivity : AppCompatActivity() {
 
                             runOnUiThread {
                                 this.startActivity(Intent(this, MainActivity::class.java))
+                                finish()
                             }
                         },
                         null
@@ -54,6 +55,7 @@ class SplashActivity : AppCompatActivity() {
                 } else {
                     runOnUiThread {
                         this.startActivity(Intent(this, MainActivity::class.java))
+                        finish()
                     }
                 }
             },
