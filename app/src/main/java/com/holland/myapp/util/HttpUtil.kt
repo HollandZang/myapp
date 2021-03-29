@@ -6,25 +6,52 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import okhttp3.*
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONStringer
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 object HttpUtil {
 
-    fun postJson(context: Context, data: Any) {
+    const val myServerHost = "119.23.68.6"
+//    const val myServerHost = "11.101.4.212"
+
+    fun get(
+        context: Context,
+        url: String,
+        data: Map<String, *>?,
+        onResponse: ((response: Response) -> Unit)?,
+        onFailure: ((exception: Exception) -> Unit)?
+    ) {
+        val build = url.toHttpUrlOrNull()?.newBuilder().apply {
+            data?.forEach { (t, u) -> this!!.addEncodedQueryParameter(t as String, u.toString()) }
+        }!!.build()
         val request = Request.Builder()
-            .url("http://www.baidu.com")
-            .post(JSONStringer().value(data).toString().toRequestBody())
+            .url(build)
+            .get()
             .build()
-        BaseClient.baseRequestAsync(context, request, { println(it.body) }, { println(it.message) })
+        BaseClient.baseRequestAsync(context, request, onResponse, onFailure)
+    }
+
+    fun postJson(
+        context: Context,
+        url: String,
+        data: Any?,
+        onResponse: ((response: Response) -> Unit)?,
+        onFailure: ((exception: Exception) -> Unit)?
+    ) {
+        val request = Request.Builder()
+            .url(url)
+            .post(GsonUtil.instance.toJson(data).toRequestBody())
+            .build()
+        BaseClient.baseRequestAsync(context, request, onResponse, onFailure)
     }
 }
 
 object BaseClient {
     private val INSTANCE = OkHttpClient.Builder()
-        .callTimeout(2, TimeUnit.SECONDS)
+        .connectTimeout(2, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true)
         .build()
 
     fun baseRequestAsync(

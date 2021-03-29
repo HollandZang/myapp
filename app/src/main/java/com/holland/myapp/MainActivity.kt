@@ -8,14 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.holland.myapp.js_interface.JsInterface
 import com.holland.myapp.repo.UserDatabase
-import com.holland.myapp.util.FileUtil
-import com.holland.myapp.util.HttpUtil
 import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var webView: WebView
+    private lateinit var webView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,18 +24,19 @@ class MainActivity : AppCompatActivity() {
             UserDatabase::class.java, "user"
         ).build()
 
-        updateVersion()
-
         webView = findViewById<WebView>(R.id.web_view).apply {
 //            loadUrl("file:///android_asset/dist/index.html")
-            loadUrl("file:///${filesDir.path}/web/dist/index.html")
+            loadUrl("file:///${filesDir.path}/web/dist/index.html")/*/data/user/0/com.holland.myapp/files*/
             addJavascriptInterface(JsInterface(this@MainActivity, this), "\$App")
             settings.apply {
                 javaScriptEnabled = true
                 setSupportZoom(false)
             }
             this.webViewClient = object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                override fun shouldOverrideUrlLoading(
+                    view: WebView?,
+                    url: String?
+                ): Boolean {
                     view!!.loadUrl(url!!)
                     return true
                 }
@@ -57,9 +56,4 @@ class MainActivity : AppCompatActivity() {
         return super.onKeyDown(keyCode, event);
     }
 
-    private fun updateVersion() {
-        HttpUtil.postJson(this, "test")
-        /*解压H5文件*/
-        FileUtil.upZipFile("${filesDir.path}/web/dist.zip", "${filesDir.path}/web")
-    }
 }
