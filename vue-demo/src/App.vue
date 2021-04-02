@@ -1,14 +1,12 @@
 <template>
-  <div>
     <div id="app">
       <router-view/>
-    </div>
 
-    <van-tabbar route id="tabbar" v-model="active" v-if="$route.meta.show_tabbar" fixed="fixed">
-      <van-tabbar-item replace to="/" icon="home-o">主页</van-tabbar-item>
-      <van-tabbar-item replace to="/PrivatePage" icon="manager-o">个人中心</van-tabbar-item>
-    </van-tabbar>
-  </div>
+      <van-tabbar route id="tabbar" v-model="active" v-if="$route.meta.show_tabbar">
+        <van-tabbar-item replace to="/" icon="home-o">主页</van-tabbar-item>
+        <van-tabbar-item replace to="/PrivatePage" icon="manager-o">个人中心</van-tabbar-item>
+      </van-tabbar>
+    </div>
 </template>
 
 <script>
@@ -29,5 +27,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   /*text-align: center;*/
   color: #2c3e50;
+  high: 100%;
+  width: 100%;
 }
 </style>

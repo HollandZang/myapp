@@ -5,6 +5,8 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.util.zip.ZipInputStream
 
 object FileUtil {
@@ -55,7 +57,7 @@ object FileUtil {
     fun upZipFile(source: String, target: String) {
         val destDir = File(target)
         val buffer = ByteArray(1024)
-        val zis = ZipInputStream(FileInputStream(source))
+        val zis = ZipInputStream(FileInputStream(source), Charset.forName("GBK"))
         var zipEntry = zis.nextEntry
         while (zipEntry != null) {
             while (zipEntry != null) {

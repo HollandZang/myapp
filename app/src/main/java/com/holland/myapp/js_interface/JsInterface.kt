@@ -6,12 +6,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.FileProvider
+import com.holland.myapp.CameraActivity
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -21,8 +21,15 @@ import java.util.*
 class JsInterface(private val activity: Activity, private val webView: WebView) {
     @JavascriptInterface
     fun showToast(msg: String?) {
-        Log.d(this::class.java.name, "do function: showToast, info: $msg")
         Toast.makeText(activity, "安卓提示: $msg", Toast.LENGTH_SHORT).show()
+    }
+
+    @JavascriptInterface
+    fun cameraX() {
+        return activity.startActivityForResult(
+            Intent(activity, CameraActivity::class.java),
+            REQUEST_TAKE_PHOTO
+        )
     }
 
     @JavascriptInterface
@@ -77,7 +84,7 @@ class JsInterface(private val activity: Activity, private val webView: WebView) 
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(activity,takePictureIntent, REQUEST_TAKE_PHOTO,null)
+                    startActivityForResult(activity, takePictureIntent, REQUEST_TAKE_PHOTO, null)
                 }
             }
         }

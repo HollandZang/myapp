@@ -50,7 +50,7 @@ object HttpUtil {
 
 object BaseClient {
     private val INSTANCE = OkHttpClient.Builder()
-        .connectTimeout(2, TimeUnit.SECONDS)
+        .connectTimeout(3, TimeUnit.SECONDS)
         .retryOnConnectionFailure(true)
         .build()
 
