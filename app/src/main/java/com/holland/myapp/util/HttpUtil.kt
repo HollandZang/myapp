@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit
 object HttpUtil {
 
     const val myServerHost = "119.23.68.6"
+    const val myFileUrl = "http://$myServerHost:8763"
 //    const val myServerHost = "11.101.4.212"
 
     fun get(

@@ -7,7 +7,8 @@ import com.holland.myapp.po.Version
 import com.holland.myapp.util.FileUtil
 import com.holland.myapp.util.GsonUtil
 import com.holland.myapp.util.HttpUtil
-import com.holland.myapp.util.SharedPreferencesUtil
+import com.holland.myapp.util.SharedPreferencesUtil.getVersion
+import com.holland.myapp.util.SharedPreferencesUtil.saveVersion
 import java.io.File
 
 class SplashActivity : AppCompatActivity() {
@@ -21,18 +22,18 @@ class SplashActivity : AppCompatActivity() {
     private fun updateVersion() {
         HttpUtil.get(
             this,
-            "http://${HttpUtil.myServerHost}:8763/filesystem/download/android/web/version",
+            "${HttpUtil.myFileUrl}/filesystem/download/android/web/version",
             null,
             {
                 val serverVersion =
                     GsonUtil.instance.fromJson(it.body?.string(), Version::class.java)
-                val currentVersion = SharedPreferencesUtil.getVersion(this)
+                val currentVersion = this.getVersion()
                 if (null == currentVersion || serverVersion.updateTime!! > currentVersion.updateTime) {
                     FileUtil.mkdir("${filesDir.path}/web")
                     HttpUtil.get(
                         this,
-                        "http://${HttpUtil.myServerHost}:8763/filesystem/download/android/web",
-                        mapOf(Pair("objectId", serverVersion.objectId)) as Map<String, *>,
+                        "${HttpUtil.myFileUrl}/filesystem/download/android/web",
+                        mapOf<String, Any?>("objectId" to serverVersion.objectId),
                         {
                             val file = File("${filesDir.path}/web/dist.zip")
                             file.outputStream().run {
@@ -43,7 +44,7 @@ class SplashActivity : AppCompatActivity() {
                                 "${filesDir.path}/web/dist.zip",
                                 "${filesDir.path}/web"
                             )
-                            SharedPreferencesUtil.saveVersion(this, serverVersion)
+                            this.saveVersion(serverVersion)
 
                             runOnUiThread {
                                 this.startActivity(Intent(this, MainActivity::class.java))

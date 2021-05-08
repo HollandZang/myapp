@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
 //        ).build()
 
         webView = findViewById<WebView>(R.id.web_view).apply {
-            loadUrl("file:///android_asset/dist/index.html")
-//            loadUrl("file:///${filesDir.path}/web/dist/index.html")/*/data/user/0/com.holland.myapp/files*/
+//            loadUrl("file:///android_asset/dist/index.html")
+            loadUrl("file:///${filesDir.path}/web/dist/index.html")/*/data/user/0/com.holland.myapp/files*/
             addJavascriptInterface(JsInterface(this@MainActivity, this), "android")
             settings.apply {
                 javaScriptEnabled = true
