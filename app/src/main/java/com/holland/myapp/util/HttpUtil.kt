@@ -75,14 +75,6 @@ object BaseClient {
             }
         )
     }
-
-    fun toast(context: Context, msg: String) {
-        Handler(Looper.getMainLooper()).run {
-            post {
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 }
 
 abstract class BaseCallback(private val context: Context, private val url: String?) : Callback {
@@ -94,6 +86,10 @@ abstract class BaseCallback(private val context: Context, private val url: Strin
     override fun onFailure(call: Call, e: IOException) {
         Log.d(this.javaClass.name, "请求失败: $url")
         e.printStackTrace()
-        BaseClient.toast(context, "网络错误")
+        Handler(Looper.getMainLooper()).run {
+            post {
+                Toast.makeText(context, "网络错误", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
