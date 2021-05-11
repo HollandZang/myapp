@@ -16,7 +16,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_main)
 
-        updateVersion()
+        this.startActivity(Intent(this, MainActivity::class.java))
+//        updateVersion()
     }
 
     private fun updateVersion() {
