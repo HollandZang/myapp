@@ -64,7 +64,7 @@ object CameraUtil {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         activity,
-                        "com.holland.myapp",
+                        activity.resources.getString(R.string.app_name),
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)

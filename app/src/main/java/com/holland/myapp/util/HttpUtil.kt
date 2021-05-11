@@ -15,7 +15,6 @@ object HttpUtil {
 
     const val myServerHost = "119.23.68.6"
     const val myFileUrl = "http://$myServerHost:8763"
-//    const val myServerHost = "11.101.4.212"
 
     fun get(
         context: Context,
@@ -30,6 +29,24 @@ object HttpUtil {
         val request = Request.Builder()
             .url(build)
             .get()
+            .build()
+        BaseClient.baseRequestAsync(context, request, onResponse, onFailure)
+    }
+
+    fun postForm(
+        context: Context,
+        url: String,
+        data: Map<String, *>?,
+        onResponse: ((response: Response) -> Unit)?,
+        onFailure: ((exception: Exception) -> Unit)?
+    ) {
+        val formBody = FormBody.Builder().let {
+            data?.forEach { (t, u) -> it.addEncoded(t, u.toString()) }
+            it.build()
+        }
+        val request = Request.Builder()
+            .url(url)
+            .post(formBody)
             .build()
         BaseClient.baseRequestAsync(context, request, onResponse, onFailure)
     }
