@@ -8,7 +8,10 @@ import android.view.KeyEvent
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import com.holland.myapp.common.ActivityResultCode
+import com.holland.myapp.js_interface.JsCall
 import com.holland.myapp.js_interface.JsInterface
+import com.holland.myapp.util.CameraUtil
 import com.holland.myapp.util.HttpUtil
 import kotlin.system.exitProcess
 
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         webView = findViewById<WebView>(R.id.web_view).apply {
             loadUrl("file:///android_asset/dist/index.html")
 //            loadUrl("file:///${filesDir.path}/web/dist/index.html")   /*  /data/user/0/com.holland.myapp/files    */
-            addJavascriptInterface(JsInterface(this@MainActivity), "App")
+            addJavascriptInterface(JsInterface(this@MainActivity), "\$App")
             settings.apply {
                 javaScriptEnabled = true
                 setSupportZoom(false)
@@ -46,6 +49,18 @@ class MainActivity : AppCompatActivity() {
                     }
                     return false
                 }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val jsCall = JsCall(webView)
+        when (requestCode) {
+            ActivityResultCode.REQUEST_TAKE_PHOTO_CAMERA.ordinal -> {
+                jsCall.appCallJs(1, CameraUtil.currentPhotoPath)
+            }
+            else -> {
             }
         }
     }

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.holland.myapp.R
+import com.holland.myapp.common.ActivityResultCode
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -23,7 +24,6 @@ object CameraUtil {
         dispatchTakePictureIntent(activity)
     }
 
-    const val REQUEST_TAKE_PHOTO = 1
     lateinit var currentPhotoPath: String
 
     @Throws(IOException::class)
@@ -64,14 +64,15 @@ object CameraUtil {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         activity,
-                        activity.resources.getString(R.string.app_name),
+//                        activity.resources.getString(R.string.app_name),
+                        "com.holland.myapp",
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     ActivityCompat.startActivityForResult(
                         activity,
                         takePictureIntent,
-                        REQUEST_TAKE_PHOTO,
+                        ActivityResultCode.REQUEST_TAKE_PHOTO_CAMERA.ordinal,
                         null
                     )
                 }

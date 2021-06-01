@@ -5,27 +5,27 @@ import android.content.Intent
 import android.webkit.JavascriptInterface
 import android.widget.Toast
 import com.holland.myapp.CameraActivity
+import com.holland.myapp.common.ActivityResultCode
 import com.holland.myapp.util.CameraUtil
 
 
 class JsInterface(private val activity: Activity) {
     @JavascriptInterface
-    fun showToast(msg: String?) {
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+    fun onToast(msg: String?) {
+        Toast.makeText(activity, msg ?: "消息为空", Toast.LENGTH_SHORT).show()
     }
 
     @JavascriptInterface
-    fun cameraX() {
+    fun onCameraX() {
         return activity.startActivityForResult(
             Intent(activity, CameraActivity::class.java),
-            CameraUtil.REQUEST_TAKE_PHOTO
+            ActivityResultCode.REQUEST_TAKE_PHOTO_CAMERA_X.ordinal
         )
     }
 
     @JavascriptInterface
-    fun camera() {
+    fun onCamera() {
         CameraUtil.openCamera(activity)
-        println("CAMERA::" + CameraUtil.currentPhotoPath)
     }
 
 }
