@@ -5,10 +5,11 @@
     <!--    </div>-->
     <!--    <div>入参file: 打包文件-->
     <!--    </div>-->
-    <div>
-      <van-button type="info" @click="onToast(toast)">安卓Toast方法</van-button>
-      <input :id="toast"/>
-    </div>
+    <van-field v-model="toast" center clearable label="安卓提示" placeholder="请输入提示内容">
+      <template #button>
+        <van-button size="small" type="primary" @click="onToast(toast)">发送</van-button>
+      </template>
+    </van-field>
     <van-button type="info" @click="onCamera()">Camera拍照接口</van-button>
     <van-button type="info" @click="onCameraX()">CameraX拍照接口</van-button>
   </div>
@@ -17,10 +18,6 @@
 <script>
 import AppInterface from "../uitl/AppInterface";
 
-window.javaCallJs = function (args) {
-  this.onToast("收到参数: " + args)
-}
-
 export default {
   name: 'HomePage',
   mixins: [AppInterface],
@@ -28,12 +25,6 @@ export default {
     return {
       toast: null,
     }
-  },
+  }
 }
 </script>
-
-<style>
-.my-swipe .van-swipe-item {
-  height: 150px;
-  width: 100%;
-}</style>
