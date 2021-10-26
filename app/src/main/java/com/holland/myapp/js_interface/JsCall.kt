@@ -6,7 +6,7 @@ import android.webkit.WebView
 class JsCall(private val webView: WebView) {
 
     /**
-     * @param type 1: 返回图片地址
+     * @param type 1: 方法回调类型
      * @param args 2: 参数列表
      */
     @SuppressLint("ObsoleteSdkInt")

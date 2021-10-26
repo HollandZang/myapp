@@ -11,6 +11,9 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
+typealias OnResponse = (response: Response) -> Unit
+typealias OnFailure = (exception: Exception) -> Unit
+
 object HttpUtil {
 
     const val myServerHost = "119.23.68.6"
@@ -20,8 +23,8 @@ object HttpUtil {
         context: Context,
         url: String,
         data: Map<String, *>?,
-        onResponse: ((response: Response) -> Unit)?,
-        onFailure: ((exception: Exception) -> Unit)?
+        onResponse: OnResponse?,
+        onFailure: OnFailure?
     ) {
         val build = url.toHttpUrlOrNull()?.newBuilder().apply {
             data?.forEach { (t, u) -> this!!.addEncodedQueryParameter(t, u.toString()) }
@@ -37,8 +40,8 @@ object HttpUtil {
         context: Context,
         url: String,
         data: Map<String, *>?,
-        onResponse: ((response: Response) -> Unit)?,
-        onFailure: ((exception: Exception) -> Unit)?
+        onResponse: OnResponse?,
+        onFailure: OnFailure?
     ) {
         val formBody = FormBody.Builder().let {
             data?.forEach { (t, u) -> it.addEncoded(t, u.toString()) }
@@ -55,8 +58,8 @@ object HttpUtil {
         context: Context,
         url: String,
         data: Any?,
-        onResponse: ((response: Response) -> Unit)?,
-        onFailure: ((exception: Exception) -> Unit)?
+        onResponse: OnResponse?,
+        onFailure: OnFailure?
     ) {
         val request = Request.Builder()
             .url(url)
@@ -75,8 +78,8 @@ object BaseClient {
     fun baseRequestAsync(
         context: Context,
         request: Request,
-        onResponse: ((response: Response) -> Unit)?,
-        onFailure: ((exception: Exception) -> Unit)?
+        onResponse: OnResponse?,
+        onFailure: OnFailure?
     ) {
         INSTANCE.newCall(request).enqueue(
             object : BaseCallback(context, request.url.encodedPath) {

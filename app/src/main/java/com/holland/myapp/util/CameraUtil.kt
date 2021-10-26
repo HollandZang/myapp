@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import com.holland.myapp.BuildConfig
 import com.holland.myapp.R
 import com.holland.myapp.common.ActivityResultCode
 import java.io.File
@@ -64,8 +65,7 @@ object CameraUtil {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         activity,
-//                        activity.resources.getString(R.string.app_name),
-                        "com.holland.myapp",
+                        "${BuildConfig.APPLICATION_ID}.fileprovider",
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
