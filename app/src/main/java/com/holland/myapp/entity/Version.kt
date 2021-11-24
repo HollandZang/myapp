@@ -1,4 +1,4 @@
-package com.holland.myapp.po
+package com.holland.myapp.entity
 
 import java.util.*
 

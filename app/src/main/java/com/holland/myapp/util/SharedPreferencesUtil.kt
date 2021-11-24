@@ -2,7 +2,7 @@ package com.holland.myapp.util
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.holland.myapp.po.Version
+import com.holland.myapp.entity.Version
 
 object SharedPreferencesUtil {
 

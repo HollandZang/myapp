@@ -3,7 +3,7 @@ package com.holland.myapp
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.holland.myapp.po.Version
+import com.holland.myapp.entity.Version
 import com.holland.myapp.util.FileUtil
 import com.holland.myapp.util.GsonUtil
 import com.holland.myapp.util.HttpUtil

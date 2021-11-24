@@ -21,6 +21,16 @@ export default {
     return {
       toast: null,
     }
+  },
+  methods: {
+    test() {
+      this.axios({
+        method:'get',
+        url:'http://www.baidu.com/'
+      }).then(function(res){
+        console.log(res.data);
+      })
+    }
   }
 }
 </script>

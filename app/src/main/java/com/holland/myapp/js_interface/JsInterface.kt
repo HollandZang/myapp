@@ -16,7 +16,7 @@ class JsInterface(private val activity: Activity) {
     @JavascriptInterface
     fun onToast(msg: String?) = Toast.makeText(
         activity,
-        if (msg == null) "消息为空" else if (msg.isBlank()) "消息为空" else msg,
+        if (msg == null || msg.isBlank()) "消息为空" else msg,
         Toast.LENGTH_SHORT
     ).show()
 

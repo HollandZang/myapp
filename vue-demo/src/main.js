@@ -3,6 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+Vue.use(VueAxios, axios)
 
 // todo Vant 支持一次性导入所有组件，引入所有组件会增加代码包体积，因此不推荐这种做法。
 import Vant from 'vant'

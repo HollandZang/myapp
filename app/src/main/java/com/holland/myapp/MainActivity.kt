@@ -16,6 +16,7 @@ import androidx.core.content.FileProvider.getUriForFile
 import androidx.core.view.isVisible
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.holland.myapp.common.ActivityResultCode
+import com.holland.myapp.entity.User
 import com.holland.myapp.js_interface.JsCall
 import com.holland.myapp.js_interface.JsInterface
 import com.holland.myapp.util.CameraUtil
@@ -23,9 +24,17 @@ import com.holland.myapp.util.DateUtil.toStr
 import com.holland.myapp.util.DateUtil.toYYYYMMDD
 import com.holland.myapp.util.HttpUtil
 import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
+import java.net.ServerSocket
+import java.net.Socket
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
 
@@ -34,14 +43,56 @@ class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var fab: FloatingActionButton
 
+    val newCachedThreadPool = ThreadPoolExecutor(
+        0, Int.MAX_VALUE,
+        60L, TimeUnit.SECONDS,
+        SynchronousQueue()
+    )
+
+    fun callback() {
+        val ip = 10000
+        val server = ServerSocket(ip)
+
+        println("开启成功：$ip")
+        while (true) {
+            val clientSocket: Socket = server.accept()
+
+            newCachedThreadPool.execute {
+                println("收到请求")
+
+                val inputStream = clientSocket.getInputStream()
+
+                val bytes = ByteArray(inputStream.available())
+                val read = inputStream.read(bytes, 0, inputStream.available())
+                val requestStr = String(bytes)
+                println(requestStr)
+
+                inputStream.close()
+                clientSocket.close()
+                println("关闭会话\n")
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val db: UserDatabase = Room.databaseBuilder(
-//            applicationContext,
-//            UserDatabase::class.java, "user"
-//        ).build()
+        GlobalScope.launch(Dispatchers.Default) {
+            User.initDb(applicationContext)
+            val all = User.action.getAll()
+            println(all)
+        }
+
+//        HttpUtil.postForm(
+//            this,
+//            "http://11.101.9.117:9999/StardonSDFXReturn/aiTest",
+//            mapOf("fwqmc" to "SCXD-Server-001", "sbqqsj" to "2021-09-24_16:09:24.123.643"),
+//            { println(it.body?.string()) }, { it.printStackTrace() })
+//
+//        GlobalScope.launch(Dispatchers.Default) {
+//            callback()
+//        }
 
         val logDoc = File("${externalCacheDir!!.parent!!}/log")
             .also { if (it.exists().not()) it.mkdir() }
